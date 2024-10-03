@@ -2,6 +2,7 @@ import java.math.BigDecimal;
 import java.time.Instant;
 
 public class Ticket {
+
     private String id;
     private String concertHall;
     private String eventCode;
@@ -72,6 +73,24 @@ public class Ticket {
         } else {
             throw new IllegalArgumentException("eventCode should consist of 3 digits only");
         }
+    }
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "id='" + id + '\'' +
+                ", concertHall='" + concertHall + '\'' +
+                ", eventCode='" + eventCode + '\'' +
+                ", time=" + time +
+                ", isPromo=" + isPromo +
+                ", sector=" + sector +
+                ", backpackWeight=" + backpackWeight +
+                ", ticketCreationTime=" + ticketCreationTime +
+                ", price=" + price +
+                '}';
     }
 }
 
