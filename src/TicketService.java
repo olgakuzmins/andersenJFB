@@ -1,52 +1,69 @@
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class TicketService {
+
+    private static final HashMap<String, Ticket> TICKETS = new HashMap<>();
+
+    static {
+        Ticket ticket1 = new Ticket("k9!j", "Tabernacle", "123",
+                Instant.parse("2024-12-12T19:00:00.000Z"), false, Sector.B,
+                4.547, new BigDecimal("70.00"));
+        TICKETS.put(ticket1.getId(), ticket1);
+
+        Ticket ticket2 = new Ticket("1234", "Radio City", "007",
+                Instant.parse("2024-11-29T19:00:00.000Z"), true, Sector.A,
+                1.12, new BigDecimal("50.00"));
+        TICKETS.put(ticket2.getId(), ticket2);
+
+        Ticket ticket3 = new Ticket("0fy7", "Red Rocks", "987",
+                Instant.parse("2024-10-26T20:00:00.000Z"), true, Sector.C,
+                3.50, new BigDecimal("50.00"));
+        TICKETS.put(ticket3.getId(), ticket3);
+
+        Ticket ticket4 = new Ticket("hj90", "Tabernacle", "123",
+                Instant.parse("2024-12-12T19:00:00.000Z"), false, Sector.B,
+                2.569, new BigDecimal("70.00"));
+        TICKETS.put(ticket4.getId(), ticket4);
+
+        Ticket ticket5 = new Ticket("87gq", "Radio City", "007",
+                Instant.parse("2024-11-29T19:00:00.000Z"), false, Sector.A,
+                1.975, new BigDecimal("90.00"));
+        TICKETS.put(ticket5.getId(), ticket5);
+
+        Ticket ticket6 = new Ticket("n.45", "Ole Opry", "314",
+                Instant.parse("2024-10-03T21:00:00.000Z"), true, Sector.C,
+                12.311, new BigDecimal("50.00"));
+        TICKETS.put(ticket6.getId(), ticket6);
+
+        Ticket ticket7 = new Ticket("p!29", "Tabernacle", "123",
+                Instant.parse("2024-12-12T19:00:00.000Z"), true, Sector.C,
+                0.000, new BigDecimal("50.00"));
+        TICKETS.put(ticket7.getId(), ticket7);
+
+        Ticket ticket8 = new Ticket("2209", "Tabernacle", "123",
+                Instant.parse("2024-12-12T19:00:00.000Z"), true, Sector.B,
+                9.150, new BigDecimal("70.00"));
+        TICKETS.put(ticket8.getId(), ticket8);
+
+        Ticket ticket9 = new Ticket("p_oo", "Red Rocks", "987",
+                Instant.parse("2024-10-26T20:00:00.000Z"), false, Sector.A,
+                1.312, new BigDecimal("90.00"));
+        TICKETS.put(ticket9.getId(), ticket9);
+
+        Ticket ticket10 = new Ticket("nk34", "Ole Opry", "314",
+                Instant.parse("2024-10-03T21:00:00.000Z"), false, Sector.A,
+                0.500, new BigDecimal("90.00"));
+        TICKETS.put(ticket10.getId(), ticket10);
+    }
+
+    public Ticket returnTicketById(String id) {
+        return TICKETS.get(id);
+    }
+
     public static void main(String[] args) {
-        ArrayList<Ticket> tickets = new ArrayList<>();
-
-        BigDecimal price = new BigDecimal("60.55");
-        tickets.add(new Ticket("111A", "Opera", "121", Instant.now(), false, Sector.A, (float) 5.00, price));
-        tickets.add(new Ticket("112A", "Opera", "122", Instant.now(), false, Sector.A, (float) 5.00, price));
-        tickets.add(new Ticket("113A", "Opera", "123", Instant.now(), false, Sector.A, (float) 5.00, price));
-        tickets.add(new Ticket("120B", "Opera", "222", Instant.now(), false, Sector.B, (float) 5.00, price));
-        tickets.add(new Ticket("121B", "Opera", "223", Instant.now(), false, Sector.B, (float) 5.00, price));
-        tickets.add(new Ticket("122B", "Opera", "224", Instant.now(), false, Sector.B, (float) 5.00, price));
-        tickets.add(new Ticket("131C", "Opera", "331", Instant.now(), false, Sector.C, (float) 5.00, price));
-        tickets.add(new Ticket("132C", "Opera", "332", Instant.now(), false, Sector.C, (float) 5.00, price));
-        tickets.add(new Ticket("133C", "Opera", "333", Instant.now(), false, Sector.C, (float) 5.00, price));
-        tickets.add(new Ticket("134C", "Opera", "334", Instant.now(), false, Sector.C, (float) 5.00, price));
-
-        for (int i = 0; i < tickets.size(); i++) {
-            Ticket ticket = tickets.get(i);
-            System.out.println(tickets.get(i));
-        }
-        Ticket ticket = findByID(tickets, "333");
-        System.out.println(ticket);
-
-        ArrayList<Ticket> stadium = findBySector(tickets, Sector.B);
-        System.out.println(stadium);
+        TicketService service = new TicketService();
+        System.out.println(service.returnTicketById("2209"));
     }
-
-    // Method to return a ticket by ID
-    public static Ticket findByID(ArrayList<Ticket> tickets, String id) {
-        for (Ticket ticket : tickets) {
-            if (ticket.getId().equals(id)) {
-                return ticket; // Return the matching ticket
-            }
-        }
-        return null; // Return null if no ticket is found
-    }
-    public static ArrayList<Ticket> findBySector(ArrayList<Ticket> tickets, Sector sector){
-        ArrayList<Ticket> foundTickets = new ArrayList<>();
-
-        for (Ticket ticket : tickets){
-            if (ticket.getSector().equals(sector)) {
-                foundTickets.add(ticket);
-            }
-        }
-        return foundTickets;
-    }
-
 }
