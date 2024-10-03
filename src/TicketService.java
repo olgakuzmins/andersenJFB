@@ -58,7 +58,12 @@ public class TicketService {
         TICKETS.put(ticket10.getId(), ticket10);
     }
 
-    public static void main(String[] args) {
+    public Ticket returnTicketById(String id) {
+        return TICKETS.get(id);
+    }
 
+    public static void main(String[] args) {
+        TicketService service = new TicketService();
+        System.out.println(service.returnTicketById("2209"));
     }
 }
