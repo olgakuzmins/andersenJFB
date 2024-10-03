@@ -34,6 +34,14 @@ public class Ticket {
         this.price = price;
     }
 
+    public Sector getSector() {
+        return sector;
+    }
+
+    public String getId() {
+        return id;
+    }
+
     public void checkId(String id) {
         if (id == null) {
             throw new IllegalArgumentException("id is null");
@@ -72,6 +80,21 @@ public class Ticket {
         } else {
             throw new IllegalArgumentException("eventCode should consist of 3 digits only");
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "id='" + id + '\'' +
+                ", concertHall='" + concertHall + '\'' +
+                ", eventCode='" + eventCode + '\'' +
+                ", time=" + time +
+                ", isPromo=" + isPromo +
+                ", sector=" + sector +
+                ", backpackWeight=" + backpackWeight +
+                ", ticketCreationTime=" + ticketCreationTime +
+                ", price=" + price +
+                '}';
     }
 }
 
