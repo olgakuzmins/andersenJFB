@@ -1,6 +1,9 @@
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class TicketService {
 
@@ -62,8 +65,19 @@ public class TicketService {
         return TICKETS.get(id);
     }
 
+    public List<Ticket> returnTicketsBySector(Sector sector) {
+        List<Ticket> sectorTickets = new ArrayList<>();
+        for (Map.Entry<String, Ticket> ticket : TICKETS.entrySet()) {
+            if (ticket.getValue().getSector().equals(sector)) {
+                sectorTickets.add(ticket.getValue());
+            }
+        }
+        return sectorTickets;
+    }
+
     public static void main(String[] args) {
         TicketService service = new TicketService();
         System.out.println(service.returnTicketById("2209"));
+        System.out.println(service.returnTicketsBySector(Sector.B));
     }
 }
