@@ -35,6 +35,10 @@ public class Ticket {
         this.price = price;
     }
 
+    public Sector getSector() {
+        return sector;
+    }
+
     public void checkId(String id) {
         if (id == null) {
             throw new IllegalArgumentException("id is null");
