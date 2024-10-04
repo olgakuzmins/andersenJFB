@@ -2,10 +2,10 @@ package model;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.UUID;
 
-public class Ticket {
+public class Ticket extends BasicEntity{
 
-    private String id;
     private String concertHall;
     private String eventCode;
     private Instant time;
@@ -24,7 +24,7 @@ public class Ticket {
         this.time = time;
     }
 
-    public Ticket(String id, String concertHall,
+    public Ticket(UUID id, String concertHall,
                   String eventCode, Instant time, boolean isPromo,
                   Sector sector, double backpackWeight, BigDecimal price) {
         checkId(id);
@@ -41,20 +41,11 @@ public class Ticket {
         return sector;
     }
 
-    public void checkId(String id) {
+    public void checkId(UUID id) {
         if (id == null) {
             throw new IllegalArgumentException("id is null");
         }
-
-        if (id.isEmpty() | id.length() > 4) {
-            throw new IllegalArgumentException("id mustn't be empty or be longer than 4 characters");
-        }
-
-        if (id.matches("^\\S+$")) {
-            this.id = id;
-        } else {
-            throw new IllegalArgumentException("id must not contain spaces");
-        }
+        this.id = id;
     }
 
     public void checkConcertHall(String concertHall) {
@@ -79,9 +70,6 @@ public class Ticket {
         } else {
             throw new IllegalArgumentException("eventCode should consist of 3 digits only");
         }
-    }
-    public String getId() {
-        return id;
     }
 
     @Override
