@@ -1,3 +1,8 @@
+package service;
+
+import model.Sector;
+import model.Ticket;
+
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.ArrayList;
