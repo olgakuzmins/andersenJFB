@@ -80,6 +80,9 @@ public class TicketService {
     public static void main(String[] args) {
         TicketService service = new TicketService();
         System.out.println(service.returnTicketById(UUID.randomUUID()));
-        System.out.println(service.returnTicketsBySector(Sector.B));
+        List<Ticket> list = service.returnTicketsBySector(Sector.B);
+        for (Ticket ticket : list) {
+            ticket.print();
+        }
     }
 }

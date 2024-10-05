@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
 
-public class Ticket extends BasicEntity{
+public class Ticket extends BasicEntity implements Printable{
 
     private String concertHall;
     private String eventCode;
