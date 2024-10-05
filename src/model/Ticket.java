@@ -37,8 +37,44 @@ public class Ticket extends BasicEntity implements Printable{
         this.price = price;
     }
 
+    public String getConcertHall() {
+        return concertHall;
+    }
+
+    public String getEventCode() {
+        return eventCode;
+    }
+
+    public Instant getTime() {
+        return time;
+    }
+
+    public boolean isPromo() {
+        return isPromo;
+    }
+
+    public double getBackpackWeight() {
+        return backpackWeight;
+    }
+
+    public Instant getTicketCreationTime() {
+        return ticketCreationTime;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
     public Sector getSector() {
         return sector;
+    }
+
+    public void setTime(Instant time) {
+        this.time = time;
+    }
+
+    public void setSector(Sector sector) {
+        this.sector = sector;
     }
 
     public void checkId(UUID id) {
