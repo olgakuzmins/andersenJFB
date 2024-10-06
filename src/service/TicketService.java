@@ -1,7 +1,6 @@
 package service;
 
-import model.Sector;
-import model.Ticket;
+import model.*;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -123,5 +122,18 @@ public class TicketService {
             service.shareTicket(ticket,"+38 098 76-09-65");
             service.shareTicket(ticket,"+38 098 76-09-65", "ujej@gmail.com");
         }
+
+        User user = new User();
+        user.printRole();
+
+        Client client = new Client();
+        client.printRole();
+
+        Admin admin = new Admin();
+        admin.printRole();
+
+        Ticket ticket = new Ticket();
+        System.out.println(client.getTicket());
+        admin.checkTicket(ticket);
     }
 }

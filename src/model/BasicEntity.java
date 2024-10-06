@@ -2,7 +2,7 @@ package model;
 
 import java.util.UUID;
 
-public abstract class BasicEntity {
+public abstract class BasicEntity implements Printable {
     protected UUID id = UUID.randomUUID();
 
     public UUID getId() {
