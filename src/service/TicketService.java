@@ -102,7 +102,7 @@ public class TicketService {
     }
 
     public String checkEmail(String email) {
-        if (email != null && email.matches("^[\\w-\\.]+@[\\w-]+(\\.[\\w-]+)*\\.[a-z]{2,}$")) {
+        if (email != null && email.matches("^[\\w-]+@[\\w-]+(\\.[\\w-]+)*\\.[a-z]{2,}$")) {
             return email;
         } else {
             throw new IllegalArgumentException("Wrong email format");
@@ -119,6 +119,7 @@ public class TicketService {
         TicketService service = new TicketService();
         List<Ticket> list = service.returnTicketsBySector(Sector.B);
         for (Ticket ticket : list) {
+            ticket.print();
             service.shareTicket(ticket,"+38 098 76-09-65");
             service.shareTicket(ticket,"+38 098 76-09-65", "ujej@gmail.com");
         }

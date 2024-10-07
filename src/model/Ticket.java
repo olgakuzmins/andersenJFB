@@ -1,10 +1,16 @@
 package model;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 import java.util.UUID;
 
 public class Ticket extends BasicEntity {
+    private static final DecimalFormat formatter = new DecimalFormat("€##,##");
 
     private String concertHall;
     private String eventCode;
@@ -110,17 +116,38 @@ public class Ticket extends BasicEntity {
 
     @Override
     public String toString() {
-        return "Ticket{" +
-                "id='" + id + '\'' +
-                ", concertHall='" + concertHall + '\'' +
-                ", eventCode='" + eventCode + '\'' +
-                ", time=" + time +
-                ", isPromo=" + isPromo +
-                ", sector=" + sector +
-                ", backpackWeight=" + backpackWeight +
-                ", ticketCreationTime=" + ticketCreationTime +
-                ", price=" + price +
-                '}';
+        return "Ticket #" + id + '\n' +
+                "concertHall = "+ concertHall + '\n' +
+                "eventCode = " + eventCode + '\n' +
+                "time = " + formatDate(time) + '\n' +
+                "isPromo = " + isPromo + '\n' +
+                "sector = " + sector + '\n' +
+                "backpackWeight = " + backpackWeight + '\n' +
+                "ticketCreationTime = " + formatDate(ticketCreationTime) + '\n' +
+                "price = " + formatter.format(price) + '\n';
+    }
+
+    private String formatDate(Instant instant) {
+        LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        return dateTime.format(formatter);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Ticket ticket = (Ticket) o;
+        return isPromo == ticket.isPromo && Double.compare(backpackWeight, ticket.backpackWeight) == 0
+                && Objects.equals(concertHall, ticket.concertHall) && Objects.equals(eventCode, ticket.eventCode)
+                && Objects.equals(time, ticket.time) && sector == ticket.sector
+                && Objects.equals(ticketCreationTime, ticket.ticketCreationTime)
+                && Objects.equals(price, ticket.price);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(concertHall, eventCode, time, isPromo, sector, backpackWeight, ticketCreationTime, price);
     }
 }
 
