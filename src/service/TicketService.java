@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.*;
 
-public class TicketService {
+public class TicketService extends BasicEntity implements ShareTicket {
 
     private static final HashMap<UUID, Ticket> TICKETS = new HashMap<>();
 
@@ -76,45 +76,6 @@ public class TicketService {
         return sectorTickets;
     }
 
-    public void shareTicket(Ticket ticket, String phoneNumber) {
-        System.out.println("The ticket " + checkTicket(ticket).getId() + " is sent to the number " + checkPhoneNumber(phoneNumber));
-    }
-
-    public void shareTicket(Ticket ticket, String phoneNumber, String email) {
-        System.out.println("The ticket " + checkTicket(ticket).getId() + " is sent to the number " + checkPhoneNumber(phoneNumber) + " and email " + checkEmail(email));
-    }
-
-    public String checkPhoneNumber(String phoneNumber) {
-        String number = phoneNumber;
-        if (phoneNumber != null && !phoneNumber.isEmpty()) {
-            number = number.replace(" ", "").
-                    replace("(", "").
-                    replace(")", "").
-                    replace("-", "").
-                    replace("+", "");
-        } else {
-            throw new IllegalArgumentException("Phone number shouldn't be empty");
-        }
-
-        if (number.matches("^\\d+")){
-            return phoneNumber;
-        } else throw new IllegalArgumentException("Phone number should consist of no more than 15 digits only");
-    }
-
-    public String checkEmail(String email) {
-        if (email != null && email.matches("^[\\w-]+@[\\w-]+(\\.[\\w-]+)*\\.[a-z]{2,}$")) {
-            return email;
-        } else {
-            throw new IllegalArgumentException("Wrong email format");
-        }
-    }
-
-    private Ticket checkTicket(Ticket ticket) {
-        if (ticket != null) {
-            return ticket;
-        } else throw new IllegalArgumentException("Ticket shouldn't be empty");
-    }
-
     public static void main(String[] args) {
         TicketService service = new TicketService();
         List<Ticket> list = service.returnTicketsBySector(Sector.B);
@@ -125,6 +86,7 @@ public class TicketService {
         }
 
         User user = new User();
+        System.out.println(user.getId());
         user.printRole();
 
         Client client = new Client();

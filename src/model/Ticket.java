@@ -55,6 +55,10 @@ public class Ticket extends BasicEntity {
         return time;
     }
 
+    public void setTime(Instant time) {
+        this.time = time;
+    }
+
     public boolean isPromo() {
         return isPromo;
     }
@@ -73,10 +77,6 @@ public class Ticket extends BasicEntity {
 
     public Sector getSector() {
         return sector;
-    }
-
-    public void setTime(Instant time) {
-        this.time = time;
     }
 
     public void setSector(Sector sector) {
@@ -115,6 +115,23 @@ public class Ticket extends BasicEntity {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Ticket ticket = (Ticket) o;
+        return isPromo == ticket.isPromo && Double.compare(backpackWeight, ticket.backpackWeight) == 0
+                && Objects.equals(concertHall, ticket.concertHall) && Objects.equals(eventCode, ticket.eventCode)
+                && Objects.equals(time, ticket.time) && sector == ticket.sector
+                && Objects.equals(ticketCreationTime, ticket.ticketCreationTime)
+                && Objects.equals(price, ticket.price);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(concertHall, eventCode, time, isPromo, sector, backpackWeight, ticketCreationTime, price);
+    }
+
+    @Override
     public String toString() {
         return "Ticket #" + id + '\n' +
                 "concertHall = "+ concertHall + '\n' +
@@ -131,23 +148,6 @@ public class Ticket extends BasicEntity {
         LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         return dateTime.format(formatter);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Ticket ticket = (Ticket) o;
-        return isPromo == ticket.isPromo && Double.compare(backpackWeight, ticket.backpackWeight) == 0
-                && Objects.equals(concertHall, ticket.concertHall) && Objects.equals(eventCode, ticket.eventCode)
-                && Objects.equals(time, ticket.time) && sector == ticket.sector
-                && Objects.equals(ticketCreationTime, ticket.ticketCreationTime)
-                && Objects.equals(price, ticket.price);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(concertHall, eventCode, time, isPromo, sector, backpackWeight, ticketCreationTime, price);
     }
 }
 
