@@ -1,11 +1,16 @@
 package model;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
-public class Ticket {
+public class Ticket extends BasicEntity {
+    private static final DecimalFormat formatter = new DecimalFormat("€##,##");
 
-    private String id;
     private String concertHall;
     private String eventCode;
     private Instant time;
@@ -24,10 +29,10 @@ public class Ticket {
         this.time = time;
     }
 
-    public Ticket(String id, String concertHall,
+    public Ticket(String concertHall,
                   String eventCode, Instant time, boolean isPromo,
                   Sector sector, double backpackWeight, BigDecimal price) {
-        checkId(id);
+
         checkConcertHall(concertHall);
         checkEventCode(eventCode);
         this.time = time;
@@ -37,24 +42,44 @@ public class Ticket {
         this.price = price;
     }
 
+    public String getConcertHall() {
+        return concertHall;
+    }
+
+    public String getEventCode() {
+        return eventCode;
+    }
+
+    public Instant getTime() {
+        return time;
+    }
+
+    public void setTime(Instant time) {
+        this.time = time;
+    }
+
+    public boolean isPromo() {
+        return isPromo;
+    }
+
+    public double getBackpackWeight() {
+        return backpackWeight;
+    }
+
+    public Instant getTicketCreationTime() {
+        return ticketCreationTime;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
     public Sector getSector() {
         return sector;
     }
 
-    public void checkId(String id) {
-        if (id == null) {
-            throw new IllegalArgumentException("id is null");
-        }
-
-        if (id.isEmpty() | id.length() > 4) {
-            throw new IllegalArgumentException("id mustn't be empty or be longer than 4 characters");
-        }
-
-        if (id.matches("^\\S+$")) {
-            this.id = id;
-        } else {
-            throw new IllegalArgumentException("id must not contain spaces");
-        }
+    public void setSector(Sector sector) {
+        this.sector = sector;
     }
 
     public void checkConcertHall(String concertHall) {
@@ -80,23 +105,41 @@ public class Ticket {
             throw new IllegalArgumentException("eventCode should consist of 3 digits only");
         }
     }
-    public String getId() {
-        return id;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Ticket ticket = (Ticket) o;
+        return isPromo == ticket.isPromo && Double.compare(backpackWeight, ticket.backpackWeight) == 0
+                && Objects.equals(concertHall, ticket.concertHall) && Objects.equals(eventCode, ticket.eventCode)
+                && Objects.equals(time, ticket.time) && sector == ticket.sector
+                && Objects.equals(ticketCreationTime, ticket.ticketCreationTime)
+                && Objects.equals(price, ticket.price);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(concertHall, eventCode, time, isPromo, sector, backpackWeight, ticketCreationTime, price);
     }
 
     @Override
     public String toString() {
-        return "Ticket{" +
-                "id='" + id + '\'' +
-                ", concertHall='" + concertHall + '\'' +
-                ", eventCode='" + eventCode + '\'' +
-                ", time=" + time +
-                ", isPromo=" + isPromo +
-                ", sector=" + sector +
-                ", backpackWeight=" + backpackWeight +
-                ", ticketCreationTime=" + ticketCreationTime +
-                ", price=" + price +
-                '}';
+        return "Ticket #" + id + '\n' +
+                "concertHall = "+ concertHall + '\n' +
+                "eventCode = " + eventCode + '\n' +
+                "time = " + formatDate(time) + '\n' +
+                "isPromo = " + isPromo + '\n' +
+                "sector = " + sector + '\n' +
+                "backpackWeight = " + backpackWeight + '\n' +
+                "ticketCreationTime = " + formatDate(ticketCreationTime) + '\n' +
+                "price = " + formatter.format(price) + '\n';
+    }
+
+    private String formatDate(Instant instant) {
+        LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        return dateTime.format(formatter);
     }
 }
 
