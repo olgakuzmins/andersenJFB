@@ -4,7 +4,7 @@ import model.Ticket;
 
 public class CheckTicketUtil {
 
-    private void CheckEmailUtil(){}
+    private CheckTicketUtil(){}
 
     public static Ticket checkTicket(Ticket ticket) {
         if (ticket != null) {

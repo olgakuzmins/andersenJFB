@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
-import java.util.UUID;
 
 public class Ticket extends BasicEntity {
     private static final DecimalFormat formatter = new DecimalFormat("€##,##");
@@ -30,10 +29,10 @@ public class Ticket extends BasicEntity {
         this.time = time;
     }
 
-    public Ticket(UUID id, String concertHall,
+    public Ticket(String concertHall,
                   String eventCode, Instant time, boolean isPromo,
                   Sector sector, double backpackWeight, BigDecimal price) {
-        checkId(id);
+
         checkConcertHall(concertHall);
         checkEventCode(eventCode);
         this.time = time;
@@ -81,13 +80,6 @@ public class Ticket extends BasicEntity {
 
     public void setSector(Sector sector) {
         this.sector = sector;
-    }
-
-    public void checkId(UUID id) {
-        if (id == null) {
-            throw new IllegalArgumentException("id is null");
-        }
-        this.id = id;
     }
 
     public void checkConcertHall(String concertHall) {
