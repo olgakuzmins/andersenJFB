@@ -1,9 +1,10 @@
-package service;
+package com.kuzmins.service;
 
-import model.Ticket;
-import utils.CheckEmailUtil;
-import utils.CheckPhoneNumberUtil;
-import utils.CheckTicketUtil;
+import com.kuzmins.model.Ticket;
+import com.kuzmins.utils.CheckEmailUtil;
+import com.kuzmins.utils.CheckPhoneNumberUtil;
+import com.kuzmins.utils.CheckTicketUtil;
+
 
 public interface ShareTicket {
     default void shareTicket(Ticket ticket, String phoneNumber) {
