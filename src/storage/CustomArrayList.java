@@ -124,7 +124,7 @@ public class CustomArrayList<T> {
     /*  TO GET BY INDEX */
 
     public T getByIndex(int index) {
-        if (index >= 0 && index < elementsAmount) {
+        if ((index >= 0) && (index < elementsAmount)) {
             return (T) array[index];
         } else
             throw new IndexOutOfBoundsException("Index must be between 0 and " + (elementsAmount - 1) + ", your index is " + index);
@@ -133,11 +133,14 @@ public class CustomArrayList<T> {
     /*  TO DELETE BY INDEX */
 
     public void deleteByIndex(int index) {
-        array[index] = null;
-        for (int i = index; i < size() - 1; i++) {
-            array[i] = array[i + 1];
-        }
-        elementsAmount--;
+        if ((index >= 0) && (index < elementsAmount)) {
+            array[index] = null;
+            for (int i = index; i < size() - 1; i++) {
+                array[i] = array[i + 1];
+            }
+            elementsAmount--;
+        } else
+            throw new IndexOutOfBoundsException("Index must be between 0 and " + (elementsAmount - 1) + ", your index is " + index);
     }
 
     /*  TO RESIZE */
