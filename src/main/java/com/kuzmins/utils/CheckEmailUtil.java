@@ -1,4 +1,4 @@
-package utils;
+package com.kuzmins.utils;
 
 public final class CheckEmailUtil {
 

@@ -1,6 +1,6 @@
-package service;
+package com.kuzmins.service;
 
-import model.*;
+import com.kuzmins.model.*;
 
 import java.math.BigDecimal;
 import java.time.Instant;
