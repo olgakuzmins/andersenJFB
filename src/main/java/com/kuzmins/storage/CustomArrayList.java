@@ -39,7 +39,7 @@ public class CustomArrayList<T> {
         notNullCheck(array);
         notNullCheck(element);
 
-        if (index < 0 || index > elementsAmount) {
+        if ((index < 0) || (index > elementsAmount)) {
             throw new IndexOutOfBoundsException("Index must be between 0 and " + elementsAmount + ", your index is " + index);
         }
 
@@ -76,7 +76,7 @@ public class CustomArrayList<T> {
         notNullCheck(array);
         notNullCheck(elements);
 
-        if (startIndex < 0 || startIndex > elementsAmount) {
+        if ((startIndex < 0) || (startIndex > elementsAmount)) {
             throw new IndexOutOfBoundsException("Index must be between 0 and " + elementsAmount + ", your index is " + startIndex);
         }
 
@@ -98,7 +98,7 @@ public class CustomArrayList<T> {
         notNullCheck(array);
         notNullCheck(element);
 
-        if (index >= 0 && index < elementsAmount) {
+        if ((index >= 0) && (index < elementsAmount)) {
             array[index] = element;
         } else
             throw new IndexOutOfBoundsException("Index must be between 0 and " + (elementsAmount - 1) + ", your index is " + index);
@@ -113,7 +113,7 @@ public class CustomArrayList<T> {
             resize();
         }
 
-        if (startIndex >= 0 && startIndex < elementsAmount) {
+        if ((startIndex >= 0) && (startIndex < elementsAmount)) {
             System.arraycopy(elements, 0, array, startIndex, elements.length);
             elementsAmount = startIndex + elements.length;
         } else

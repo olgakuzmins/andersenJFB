@@ -32,22 +32,22 @@ public class CustomHashSet<T> implements Iterable<T>{
             return;
         }
 
-        if (elementsAmount * 0.8 > nodesAmount) { resize();}
+        if ((elementsAmount * 0.8) > nodesAmount) { resize();}
 
         int elementHash = element.hashCode();
-        int bucketNumber = elementHash % nodesAmount;
+        int bucketNumber = Math.abs(elementHash) % nodesAmount;
 
         nodes[bucketNumber].add(element);
         elementsAmount++;
     }
 
     public boolean contains(T element) {
-        return nodes[element.hashCode() % nodesAmount].contains(element);
+        return nodes[getRemainderOfDivision(element)].contains(element);
     }
 
     public void delete(T element) {
         if (contains(element)) {
-            nodes[element.hashCode() % nodesAmount].remove(element);
+            nodes[getRemainderOfDivision(element)].remove(element);
         }
         elementsAmount--;
     }
@@ -61,7 +61,7 @@ public class CustomHashSet<T> implements Iterable<T>{
 
         for (LinkedList<T> linkedList : nodes) {
             for (T t : linkedList) {
-                moreNodes[t.hashCode() % moreNodes.length].add(t);
+                moreNodes[getRemainderOfDivision(t)].add(t);
             }
         }
         nodes = moreNodes;
@@ -71,10 +71,14 @@ public class CustomHashSet<T> implements Iterable<T>{
         return elementsAmount;
     }
 
+    private int getRemainderOfDivision(T t){
+        return Math.abs(t.hashCode()) % nodesAmount;
+    }
+
     @Override
     public boolean equals(Object object) {
         if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
+        if ((object == null) || (getClass() != object.getClass())) return false;
         CustomHashSet<?> that = (CustomHashSet<?>) object;
         return elementsAmount == that.elementsAmount && nodesAmount == that.nodesAmount && Objects.deepEquals(nodes, that.nodes);
     }

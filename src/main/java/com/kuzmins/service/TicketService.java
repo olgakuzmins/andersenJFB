@@ -1,6 +1,8 @@
 package com.kuzmins.service;
 
 import com.kuzmins.model.*;
+import com.kuzmins.storage.CustomArrayList;
+import com.kuzmins.storage.CustomHashSet;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -78,25 +80,92 @@ public class TicketService extends BasicEntity implements ShareTicket {
 
     public static void main(String[] args) {
         TicketService service = new TicketService();
-        List<Ticket> list = service.returnTicketsBySector(Sector.B);
-        for (Ticket ticket : list) {
-            ticket.print();
-            service.shareTicket(ticket,"+38 098 76-09-65");
-            service.shareTicket(ticket,"+38 098 76-09-65", "ujej@gmail.com");
+
+/* CustomArrayList */
+
+        CustomArrayList<Ticket> customArrayList = new CustomArrayList<>();
+
+        //add(Ticket ticket)
+        for (Ticket ticket : service.returnTicketsBySector(Sector.A)) {
+            customArrayList.add(ticket);
+            System.out.println(ticket);
         }
 
-        User user = new User();
-        System.out.println(user.getId());
-        user.printRole();
+        //add(Ticket ticket, int index) + getByIndex(int index)
+        Ticket ticket8 = new Ticket("Tabernacle", "123",
+                Instant.parse("2024-12-12T19:00:00.000Z"), true, Sector.B,
+                9.150, new BigDecimal("70.00"));
 
-        Client client = new Client();
-        client.printRole();
+        customArrayList.add(ticket8, 3);
+        System.out.println(customArrayList.getByIndex(3));
 
-        Admin admin = new Admin();
-        admin.printRole();
+        //put(Ticket ticket, int index) + deleteByIndex(int index)
+        Ticket ticket7 = new Ticket("Tabernacle", "123",
+                Instant.parse("2024-12-12T19:00:00.000Z"), true, Sector.C,
+                0.000, new BigDecimal("50.00"));
 
-        Ticket ticket = new Ticket();
-        System.out.println(client.getTicket());
-        admin.checkTicket(ticket);
+        customArrayList.put(ticket7, 0);
+        System.out.println(customArrayList.getByIndex(0));
+        customArrayList.deleteByIndex(0);
+        System.out.println(customArrayList.getByIndex(0));
+
+
+        Ticket[] tickets = new Ticket[3];
+        List<Ticket> arrayList = service.returnTicketsBySector(Sector.B);
+        System.arraycopy(arrayList.toArray(), 0, tickets, 0, tickets.length);
+
+        //add(Ticket [] tickets)
+        customArrayList.add(tickets);
+        for (int i = 0; i < customArrayList.size(); i++) {
+            System.out.println(customArrayList.getByIndex(i));
+        }
+
+        //add(Ticket [] tickets, int index)
+        customArrayList.add(tickets, 0);
+        for (int i = 0; i < customArrayList.size(); i++) {
+            System.out.println(customArrayList.getByIndex(i));
+        }
+
+        //put(Ticket [] tickets, int index)
+        customArrayList.put(tickets, 9);
+        for (int i = 0; i < customArrayList.size(); i++) {
+            System.out.println(customArrayList.getByIndex(i));
+        }
+
+/* CustomHashSet */
+
+        CustomHashSet<Ticket> customHashSet = new CustomHashSet<>();
+
+        Ticket ticket1 = new Ticket("Tabernacle", "123",
+                Instant.parse("2024-12-12T19:00:00.000Z"), false, Sector.B,
+                4.547, new BigDecimal("70.00"));
+        Ticket ticket2 = new Ticket("Radio City", "007",
+                Instant.parse("2024-11-29T19:00:00.000Z"), true, Sector.A,
+                1.12, new BigDecimal("50.00"));
+        Ticket ticket3 = new Ticket("Red Rocks", "987",
+                Instant.parse("2024-10-26T20:00:00.000Z"), true, Sector.C,
+                3.50, new BigDecimal("50.00"));
+
+        //put (T element)
+        customHashSet.put(ticket1);
+        customHashSet.put(ticket2);
+        customHashSet.put(ticket3);
+
+        //keep objects uniqueness
+        customHashSet.put(ticket3);
+
+        //iterate
+        for (Ticket ticket : customHashSet) {
+            System.out.println(ticket);
+        }
+
+        //delete(T element)
+        customHashSet.delete(ticket1);
+
+        //contains(T element)
+        if (customHashSet.contains(ticket1)) {
+            System.out.println("yes");
+        } else System.out.println("no");
+
     }
 }
