@@ -1,6 +1,8 @@
-package model;
+package com.kuzmins.model;
 
-import service.Printable;
+
+
+import com.kuzmins.service.Printable;
 
 import java.util.UUID;
 
