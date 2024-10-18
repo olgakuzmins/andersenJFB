@@ -1,4 +1,4 @@
-package storage;
+package com.kuzmins.storage;
 
 import java.util.*;
 

@@ -1,6 +1,6 @@
-package model;
+package com.kuzmins.model;
 
-import utils.CheckTicketUtil;
+import com.kuzmins.utils.CheckTicketUtil;
 
 public class Admin extends User {
 

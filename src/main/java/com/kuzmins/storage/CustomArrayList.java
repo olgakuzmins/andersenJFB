@@ -1,4 +1,4 @@
-package storage;
+package com.kuzmins.storage;
 
 public class CustomArrayList<T> {
 

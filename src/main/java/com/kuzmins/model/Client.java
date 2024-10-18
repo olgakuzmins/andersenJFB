@@ -1,4 +1,4 @@
-package model;
+package com.kuzmins.model;
 
 
 import java.util.ArrayList;

@@ -1,6 +1,7 @@
-package utils;
+package com.kuzmins.utils;
 
-import model.Ticket;
+
+import com.kuzmins.model.Ticket;
 
 public class CheckTicketUtil {
 
