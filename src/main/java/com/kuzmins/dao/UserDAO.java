@@ -3,7 +3,11 @@ package com.kuzmins.dao;
 import com.kuzmins.config.ConnectionConfig;
 import com.kuzmins.model.User;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.UUID;
 
 public class UserDAO {
