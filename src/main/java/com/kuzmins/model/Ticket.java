@@ -1,5 +1,7 @@
 package com.kuzmins.model;
 
+import jakarta.persistence.*;
+
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.time.Instant;
@@ -7,28 +9,46 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
-import java.util.UUID;
 
+@Entity
+@Table(name = "ticket_info")
 public class Ticket extends BasicEntity {
     private static final DecimalFormat formatter = new DecimalFormat("€##,##");
 
-    private UUID userId;
-    private String concertHall;
-    private String eventCode;
-    private Instant time;
-    private boolean isPromo;
-    private Sector sector;
+    @ManyToOne
+    @JoinColumn(name="user_id", referencedColumnName = "id")
+    private User owner;
+
+    @Column(name="ticket_type", nullable = false)
+    @Enumerated(EnumType.STRING)
     private TicketType type;
-    private double backpackWeight;
+
+    @Column(name="creation_date")
+    @Temporal(TemporalType.TIMESTAMP)
     private Instant ticketCreationTime = Instant.now();
+
+
+    @Transient
+    private String concertHall;
+    @Transient
+    private String eventCode;
+    @Transient
+    private Instant time;
+    @Transient
+    private boolean isPromo;
+    @Transient
+    private Sector sector;
+    @Transient
+    private double backpackWeight;
+    @Transient
     private BigDecimal price;
 
     public Ticket() {
     }
 
-    public Ticket(UUID userId, TicketType type) {
-        this.userId = userId;
+    public Ticket(User user, TicketType type) {
         this.type = type;
+        this.owner = user;
     }
 
     public Ticket(String concertHall,
@@ -43,14 +63,6 @@ public class Ticket extends BasicEntity {
         this.type = type;
         this.backpackWeight = backpackWeight;
         this.price = price;
-    }
-
-    public UUID getUserId() {
-        return userId;
-    }
-
-    public void setUserId(UUID userId) {
-        this.userId = userId;
     }
 
     public String getConcertHall() {
@@ -103,6 +115,14 @@ public class Ticket extends BasicEntity {
 
     public void setType(TicketType type) {
         this.type = type;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 
     public void checkConcertHall(String concertHall) {
