@@ -1,12 +1,20 @@
 package com.kuzmins.service;
 
-import com.kuzmins.dao.TicketDAO;
-import com.kuzmins.dao.UserDAO;
-import com.kuzmins.model.*;
+import com.kuzmins.dao.TicketsDAO;
+import com.kuzmins.dao.UsersDAO;
+import com.kuzmins.model.BasicEntity;
+import com.kuzmins.model.Sector;
+import com.kuzmins.model.Ticket;
+import com.kuzmins.model.TicketType;
+import com.kuzmins.model.User;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class TicketService extends BasicEntity implements ShareTicket {
 
@@ -80,42 +88,27 @@ public class TicketService extends BasicEntity implements ShareTicket {
 
     public static void main(String[] args) {
 
-        TicketDAO ticketDAO = new TicketDAO();
-        UserDAO userDAO = new UserDAO();
+        TicketsDAO ticketsDAO = new TicketsDAO();
+        UsersDAO usersDAO = new UsersDAO();
+        User alex = new User("Alex");
+        usersDAO.saveUser(alex);
 
-        Ticket ticket10 = new Ticket("Ole Opry", "314",
-                Instant.parse("2024-10-03T21:00:00.000Z"), false, Sector.A, TicketType.YEAR,
-                0.500, new BigDecimal("90.00"));
-        Ticket ticket9 = new Ticket("Red Rocks", "987",
-                Instant.parse("2024-10-26T20:00:00.000Z"), false, Sector.A, TicketType.MONTH,
-                1.312, new BigDecimal("90.00"));
-        Ticket ticket8 = new Ticket("Tabernacle", "123",
-                Instant.parse("2024-12-12T19:00:00.000Z"), true, Sector.B, TicketType.WEEK,
-                9.150, new BigDecimal("70.00"));
-        Ticket ticket7 = new Ticket("Tabernacle", "123",
-                Instant.parse("2024-12-12T19:00:00.000Z"), true, Sector.C, TicketType.YEAR,
-                0.000, new BigDecimal("50.00"));
+        Ticket yearTicket = new Ticket(alex, TicketType.YEAR);
+        Ticket monthTicket = new Ticket(alex, TicketType.MONTH);
+        Ticket dayTicket = new Ticket(alex, TicketType.DAY);
 
-        User kate = new User("kate");
-        User matt = new User("matt");
+        ticketsDAO.saveTicket(yearTicket);
+        ticketsDAO.saveTicket(monthTicket);
+        ticketsDAO.saveTicket(dayTicket);
 
-        ticketDAO.saveTicket(ticket10);
-        userDAO.saveUser(kate);
+        UUID id = alex.getId();
 
-        ticketDAO.saveTicket(ticket9, kate);
-        ticketDAO.saveTicket(ticket8, kate);
+        List<Ticket> tickets = ticketsDAO.getTicketsByUserId(id);
+        for (Ticket ticket : tickets) {
+            System.out.println(ticket.getOwner().getName());
+            System.out.println(ticket.getType().name());
+        }
 
-        userDAO.saveUser(matt);
-        ticketDAO.saveTicket(ticket7, matt);
-
-        Ticket ticket = ticketDAO.fetchTicketById(ticket7.getId());
-
-        List<Ticket> ticketList = ticketDAO.fetchTicketsByUserId(kate.getId());
-
-        User user3 = userDAO.fetchUserById(matt.getId());
-
-        ticketDAO.updateTicketType(ticket7.getId(), TicketType.MONTH);
-        userDAO.deleteUserById(kate.getId());
-
+        usersDAO.deleteUser(usersDAO.getUserById(id));
     }
 }

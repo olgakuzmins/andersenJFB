@@ -1,6 +1,10 @@
 package com.kuzmins.storage;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.NoSuchElementException;
+import java.util.Objects;
 
 public class CustomHashSet<T> implements Iterable<T>{
 
