@@ -12,12 +12,19 @@ import java.util.UUID;
 
 public class TicketDAO {
 
-    private final static Connection connection = ConnectionConfig.getConnection();
+    private static final Connection CONNECTION = ConnectionConfig.getConnection();
+    private static final String INSERT_TICKET_QUERY = "INSERT INTO ticket_info (id, ticket_type, creation_date) VALUES (?, ?::ticket_type, ?)";
+    private static final String INSERT_TICKET_WITH_USER_QUERY = "INSERT INTO ticket_info (id, user_id, ticket_type, creation_date) VALUES (?, ?, ?::ticket_type, ?)";
+    private static final String SELECT_TICKET_BY_ID_QUERY = "SELECT * FROM ticket_info WHERE id=?";
+    private static final String SELECT_TICKETS_BY_USER_ID_QUERY = "SELECT * FROM ticket_info WHERE user_id=?";
+    private static final String UPDATE_TICKET_TYPE_BY_ID_QUERY = "UPDATE ticket_info set ticket_type=?::ticket_type WHERE id=?";
 
-    public void saveTicket(Ticket ticket) {
+
+    public void saveTicket
+            (Ticket ticket) {
         try {
             PreparedStatement preparedStatement =
-                    connection.prepareStatement("INSERT INTO tickets (id, ticket_type, creation_date) VALUES (?, ?::ticket_type, ?)");
+                    CONNECTION.prepareStatement(INSERT_TICKET_QUERY);
 
             preparedStatement.setObject(1, ticket.getId());
             preparedStatement.setString(2, ticket.getType().name());
@@ -32,7 +39,7 @@ public class TicketDAO {
     public void saveTicket(Ticket ticket, User user) {
         try {
             PreparedStatement preparedStatement =
-                    connection.prepareStatement("INSERT INTO tickets (id, user_id, ticket_type, creation_date) VALUES (?, ?, ?::ticket_type, ?)");
+                    CONNECTION.prepareStatement(INSERT_TICKET_WITH_USER_QUERY);
 
             preparedStatement.setObject(1, ticket.getId());
             preparedStatement.setObject(2, user.getId());
@@ -49,7 +56,7 @@ public class TicketDAO {
         Ticket ticket = null;
         try {
             PreparedStatement preparedStatement =
-                    connection.prepareStatement("SELECT * FROM tickets WHERE id=?");
+                    CONNECTION.prepareStatement(SELECT_TICKET_BY_ID_QUERY);
             preparedStatement.setObject(1, id);
 
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -75,7 +82,7 @@ public class TicketDAO {
 
         try {
             PreparedStatement preparedStatement =
-                    connection.prepareStatement("SELECT * FROM tickets WHERE user_id=?");
+                    CONNECTION.prepareStatement(SELECT_TICKETS_BY_USER_ID_QUERY);
             preparedStatement.setObject(1, userId);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -97,7 +104,7 @@ public class TicketDAO {
     public void updateTicketType(UUID id, TicketType type) {
         try {
             PreparedStatement preparedStatement =
-                    connection.prepareStatement("UPDATE tickets set ticket_type=?::ticket_type WHERE id=?");
+                    CONNECTION.prepareStatement(UPDATE_TICKET_TYPE_BY_ID_QUERY);
             preparedStatement.setString(1, type.name());
             preparedStatement.setObject(2, id);
 
