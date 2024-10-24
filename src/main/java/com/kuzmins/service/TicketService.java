@@ -1,7 +1,7 @@
 package com.kuzmins.service;
 
-import com.kuzmins.dao.TicketsDAO;
-import com.kuzmins.dao.UsersDAO;
+import com.kuzmins.dao.TicketDAO;
+import com.kuzmins.dao.UserDAO;
 import com.kuzmins.model.BasicEntity;
 import com.kuzmins.model.Sector;
 import com.kuzmins.model.Ticket;
@@ -88,27 +88,27 @@ public class TicketService extends BasicEntity implements ShareTicket {
 
     public static void main(String[] args) {
 
-        TicketsDAO ticketsDAO = new TicketsDAO();
-        UsersDAO usersDAO = new UsersDAO();
+        TicketDAO ticketDAO = new TicketDAO();
+        UserDAO userDAO = new UserDAO();
         User alex = new User("Alex");
-        usersDAO.saveUser(alex);
+        userDAO.saveUser(alex);
 
         Ticket yearTicket = new Ticket(alex, TicketType.YEAR);
         Ticket monthTicket = new Ticket(alex, TicketType.MONTH);
         Ticket dayTicket = new Ticket(alex, TicketType.DAY);
 
-        ticketsDAO.saveTicket(yearTicket);
-        ticketsDAO.saveTicket(monthTicket);
-        ticketsDAO.saveTicket(dayTicket);
+        ticketDAO.saveTicket(yearTicket);
+        ticketDAO.saveTicket(monthTicket);
+        ticketDAO.saveTicket(dayTicket);
 
         UUID id = alex.getId();
 
-        List<Ticket> tickets = ticketsDAO.getTicketsByUserId(id);
+        List<Ticket> tickets = ticketDAO.getTicketsByUserId(id);
         for (Ticket ticket : tickets) {
             System.out.println(ticket.getOwner().getName());
             System.out.println(ticket.getType().name());
         }
 
-        usersDAO.deleteUser(usersDAO.getUserById(id));
+        userDAO.deleteUser(userDAO.getUserById(id));
     }
 }

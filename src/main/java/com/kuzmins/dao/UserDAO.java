@@ -1,58 +1,42 @@
 package com.kuzmins.dao;
 
-import com.kuzmins.model.Ticket;
 import com.kuzmins.model.User;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
-public class TicketsDAO {
+public class UserDAO {
 
-    public void saveTicket(Ticket ticket) {
+    public void saveUser(User user) {
         Session session = SessionFactoryProvider.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
-        session.save(ticket);
+        session.save(user);
         transaction.commit();
         session.close();
     }
 
-    public Ticket getTicketById(UUID id) {
-        Session session = SessionFactoryProvider.getSessionFactory().openSession();
-        Transaction transaction = session.beginTransaction();
-        Ticket ticket = session.get(Ticket.class, id);
-        transaction.commit();
-        session.close();
-        return ticket;
-    }
-
-    public List<Ticket> getTicketsByUserId(UUID id) {
-        List<Ticket> tickets = new ArrayList<>();
+    public User getUserById(UUID id) {
         Session session = SessionFactoryProvider.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
         User user = session.get(User.class, id);
-        if (user.getTickets() != null) {
-            tickets = user.getTickets();
-        }
         transaction.commit();
         session.close();
-        return tickets;
+        return user;
     }
 
-    public void updateTicket(Ticket ticket) {
+    public void updateUser(User user) {
         Session session = SessionFactoryProvider.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
-        session.update(ticket);
+        session.update(user);
         transaction.commit();
         session.close();
     }
 
-    public void deleteTicket(Ticket ticket) {
+    public void deleteUser(User user) {
         Session session = SessionFactoryProvider.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
-        session.delete(ticket);
+        session.delete(user);
         transaction.commit();
         session.close();
     }
