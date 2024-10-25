@@ -2,11 +2,19 @@ package com.kuzmins.service;
 
 import com.kuzmins.dao.TicketDAO;
 import com.kuzmins.dao.UserDAO;
-import com.kuzmins.model.*;
+import com.kuzmins.model.BasicEntity;
+import com.kuzmins.model.Sector;
+import com.kuzmins.model.Ticket;
+import com.kuzmins.model.TicketType;
+import com.kuzmins.model.User;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class TicketService extends BasicEntity implements ShareTicket {
 
@@ -115,6 +123,8 @@ public class TicketService extends BasicEntity implements ShareTicket {
         User user3 = userDAO.fetchUserById(matt.getId());
 
         ticketDAO.updateTicketType(ticket7.getId(), TicketType.MONTH);
+
+        Ticket ticket1 = ticketDAO.fetchTicketByIdAndUserId(ticket7.getId(), matt.getId());
         userDAO.deleteUserById(kate.getId());
 
     }

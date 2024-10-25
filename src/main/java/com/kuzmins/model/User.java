@@ -16,7 +16,6 @@ public class User extends BasicEntity {
         this.creationDate = Instant.now();
     }
 
-
     public String getName() {
         return name;
     }

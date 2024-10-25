@@ -12,16 +12,14 @@ import java.util.UUID;
 
 public class UserDAO {
 
-    private final static Connection CONNECTION = ConnectionConfig.getConnection();
     private final static String INSERT_USER_QUERY = "INSERT INTO user_info (id, name, creation_date) VALUES (?, ?, ?)";
     private final static String SELECT_USER_BY_ID_QUERY = "SELECT * FROM user_info WHERE id=?";
     private final static String DELETE_USER_BY_ID_QUERY = "DELETE FROM user_info where id=?";
 
 
     public void saveUser(User user) {
-        try {
-            PreparedStatement preparedStatement =
-            CONNECTION.prepareStatement(INSERT_USER_QUERY);
+        try (Connection connection = ConnectionConfig.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USER_QUERY)) {
 
             preparedStatement.setObject(1, user.getId());
             preparedStatement.setString(2, user.getName());
@@ -35,9 +33,9 @@ public class UserDAO {
 
     public User fetchUserById(UUID id) {
         User user = null;
-        try {
-            PreparedStatement preparedStatement =
-                    CONNECTION.prepareStatement(SELECT_USER_BY_ID_QUERY);
+        try (Connection connection = ConnectionConfig.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USER_BY_ID_QUERY)) {
+
             preparedStatement.setObject(1, id);
 
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -55,14 +53,13 @@ public class UserDAO {
     }
 
     public void deleteUserById(UUID userId) {
-        try {
-            PreparedStatement preparedStatement =
-                    CONNECTION.prepareStatement(DELETE_USER_BY_ID_QUERY);
+        try (Connection connection = ConnectionConfig.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_USER_BY_ID_QUERY)) {
+
             preparedStatement.setObject(1, userId);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
-
 }
