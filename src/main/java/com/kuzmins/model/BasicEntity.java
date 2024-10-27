@@ -18,4 +18,7 @@ public abstract class BasicEntity implements Printable {
         return id;
     }
 
+    public void setId(UUID id) {
+        this.id = id;
+    }
 }
