@@ -1,5 +1,6 @@
 package com.kuzmins.service;
 
+import com.kuzmins.config.SpringConfig;
 import com.kuzmins.dao.TicketDAO;
 import com.kuzmins.dao.UserDAO;
 import com.kuzmins.model.BasicEntity;
@@ -7,6 +8,9 @@ import com.kuzmins.model.Sector;
 import com.kuzmins.model.Ticket;
 import com.kuzmins.model.TicketType;
 import com.kuzmins.model.User;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -16,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+@Service
 public class TicketService extends BasicEntity implements ShareTicket {
 
     private static final HashMap<UUID, Ticket> TICKETS = new HashMap<>();
@@ -87,9 +92,9 @@ public class TicketService extends BasicEntity implements ShareTicket {
     }
 
     public static void main(String[] args) {
-
-        TicketDAO ticketDAO = new TicketDAO();
-        UserDAO userDAO = new UserDAO();
+        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(SpringConfig.class);
+        TicketDAO ticketDAO = applicationContext.getBean(TicketDAO.class);
+        UserDAO userDAO = applicationContext.getBean(UserDAO.class);
 
         Ticket ticket10 = new Ticket("Ole Opry", "314",
                 Instant.parse("2024-10-03T21:00:00.000Z"), false, Sector.A, TicketType.YEAR,

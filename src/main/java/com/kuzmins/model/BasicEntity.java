@@ -1,7 +1,5 @@
 package com.kuzmins.model;
 
-
-
 import com.kuzmins.service.Printable;
 
 import java.util.UUID;
