@@ -101,10 +101,15 @@ public class TicketService extends BasicEntity implements ShareTicket {
         ticketDAO.saveTicket(monthTicket);
         ticketDAO.saveTicket(dayTicket);
 
+        alex.setTickets(new ArrayList<>());
+
+        alex.getTickets().add(yearTicket);
+        alex.getTickets().add(monthTicket);
+        alex.getTickets().add(dayTicket);
+
         UUID id = alex.getId();
 
-        List<Ticket> tickets = ticketDAO.getTicketsByUserId(id);
-        for (Ticket ticket : tickets) {
+        for (Ticket ticket : alex.getTickets()) {
             System.out.println(ticket.getOwner().getName());
             System.out.println(ticket.getType().name());
         }

@@ -25,7 +25,7 @@ public class User extends BasicEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private Instant creationDate;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "owner")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "owner")
     @Cascade(CascadeType.ALL)
     private List<Ticket> tickets;
 
