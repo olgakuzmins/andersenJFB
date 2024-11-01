@@ -1,6 +1,5 @@
-package com.kuzmins.service;
+package com.kuzmins.model;
 
-import com.kuzmins.model.Ticket;
 import com.kuzmins.utils.CheckEmailUtil;
 import com.kuzmins.utils.CheckPhoneNumberUtil;
 import com.kuzmins.utils.CheckTicketUtil;

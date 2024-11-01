@@ -6,6 +6,7 @@ import com.kuzmins.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.UUID;
 @Repository
 public class TicketDAO {
 
-    private final JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;;
 
     @Autowired
     public TicketDAO(JdbcTemplate jdbcTemplate) {
@@ -29,11 +30,13 @@ public class TicketDAO {
     private static final String UPDATE_TICKET_TYPE_BY_ID_QUERY = "UPDATE ticket_info set ticket_type=?::ticket_type WHERE id=?";
     private static final String SELECT_TICKETS_BY_ID_AND_USER_ID_QUERY = "SELECT * FROM ticket_info JOIN user_info ON user_info.id = ticket_info.user_id WHERE ticket_info.id=? and user_info.id=?";
 
+    @Transactional
     public void saveTicket(Ticket ticket) {
         jdbcTemplate.update(INSERT_TICKET_QUERY,
                 ticket.getId(), ticket.getType().name(), Timestamp.from(ticket.getTicketCreationTime()));
     }
 
+    @Transactional
     public void saveTicket(Ticket ticket, User user) {
         jdbcTemplate.update(INSERT_TICKET_WITH_USER_QUERY,
                 ticket.getId(), user.getId(), ticket.getType().name(), Timestamp.from(ticket.getTicketCreationTime()));
@@ -56,7 +59,9 @@ public class TicketDAO {
                 .stream().findAny().orElse(null);
     }
 
+    @Transactional
     public void updateTicketType(UUID id, TicketType type) {
         jdbcTemplate.update(UPDATE_TICKET_TYPE_BY_ID_QUERY, type.name(), id);
     }
+
 }

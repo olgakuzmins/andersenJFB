@@ -1,5 +1,6 @@
 package com.kuzmins.dao;
 
+import com.kuzmins.model.Status;
 import com.kuzmins.model.User;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -9,6 +10,8 @@ import java.util.UUID;
 
 public class UserMapper implements RowMapper<User> {
 
+    private static TicketDAO ticketDAO;
+
     @Override
     public User mapRow(ResultSet resultSet, int rowNum) throws SQLException {
         User user = new User();
@@ -16,6 +19,7 @@ public class UserMapper implements RowMapper<User> {
         user.setId(userId);
         user.setName(resultSet.getString("name"));
         user.setCreationDate(resultSet.getTimestamp("creation_date").toInstant());
+        user.setStatus(Status.valueOf(resultSet.getString("status")));
         return user;
     }
 }

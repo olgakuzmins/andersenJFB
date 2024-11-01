@@ -5,6 +5,7 @@ import com.kuzmins.dao.TicketDAO;
 import com.kuzmins.dao.UserDAO;
 import com.kuzmins.model.BasicEntity;
 import com.kuzmins.model.Sector;
+import com.kuzmins.model.ShareTicket;
 import com.kuzmins.model.Ticket;
 import com.kuzmins.model.TicketType;
 import com.kuzmins.model.User;
@@ -96,41 +97,8 @@ public class TicketService extends BasicEntity implements ShareTicket {
         TicketDAO ticketDAO = applicationContext.getBean(TicketDAO.class);
         UserDAO userDAO = applicationContext.getBean(UserDAO.class);
 
-        Ticket ticket10 = new Ticket("Ole Opry", "314",
-                Instant.parse("2024-10-03T21:00:00.000Z"), false, Sector.A, TicketType.YEAR,
-                0.500, new BigDecimal("90.00"));
-        Ticket ticket9 = new Ticket("Red Rocks", "987",
-                Instant.parse("2024-10-26T20:00:00.000Z"), false, Sector.A, TicketType.MONTH,
-                1.312, new BigDecimal("90.00"));
-        Ticket ticket8 = new Ticket("Tabernacle", "123",
-                Instant.parse("2024-12-12T19:00:00.000Z"), true, Sector.B, TicketType.WEEK,
-                9.150, new BigDecimal("70.00"));
-        Ticket ticket7 = new Ticket("Tabernacle", "123",
-                Instant.parse("2024-12-12T19:00:00.000Z"), true, Sector.C, TicketType.YEAR,
-                0.000, new BigDecimal("50.00"));
-
-        User kate = new User("kate");
-        User matt = new User("matt");
-
-        ticketDAO.saveTicket(ticket10);
-        userDAO.saveUser(kate);
-
-        ticketDAO.saveTicket(ticket9, kate);
-        ticketDAO.saveTicket(ticket8, kate);
-
+        User matt = new User("Matt");
         userDAO.saveUser(matt);
-        ticketDAO.saveTicket(ticket7, matt);
-
-        Ticket ticket = ticketDAO.fetchTicketById(ticket7.getId());
-
-        List<Ticket> ticketList = ticketDAO.fetchTicketsByUserId(kate.getId());
-
-        User user3 = userDAO.fetchUserById(matt.getId());
-
-        ticketDAO.updateTicketType(ticket7.getId(), TicketType.MONTH);
-
-        Ticket ticket1 = ticketDAO.fetchTicketByIdAndUserId(ticket7.getId(), matt.getId());
-        userDAO.deleteUserById(kate.getId());
-
+        userDAO.updateUserAndCreateTicket(matt, TicketType.WEEK);
     }
 }
