@@ -1,16 +1,21 @@
 package com.kuzmins.dao;
 
-import com.kuzmins.config.ConnectionConfig;
 import com.kuzmins.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.UUID;
 
+@Repository
 public class UserDAO {
+    private final JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    public UserDAO(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     private final static String INSERT_USER_QUERY = "INSERT INTO user_info (id, name, creation_date) VALUES (?, ?, ?)";
     private final static String SELECT_USER_BY_ID_QUERY = "SELECT * FROM user_info WHERE id=?";
@@ -18,48 +23,15 @@ public class UserDAO {
 
 
     public void saveUser(User user) {
-        try (Connection connection = ConnectionConfig.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USER_QUERY)) {
-
-            preparedStatement.setObject(1, user.getId());
-            preparedStatement.setString(2, user.getName());
-            preparedStatement.setTimestamp(3, Timestamp.from(user.getCreationDate()));
-
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        jdbcTemplate.update(INSERT_USER_QUERY, user.getId(), user.getName(), Timestamp.from(user.getCreationDate()));
     }
 
     public User fetchUserById(UUID id) {
-        User user = null;
-        try (Connection connection = ConnectionConfig.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USER_BY_ID_QUERY)) {
-
-            preparedStatement.setObject(1, id);
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                user = new User();
-                UUID userId = UUID.fromString(resultSet.getString("id"));
-                user.setId(userId);
-                user.setName(resultSet.getString("name"));
-                user.setCreationDate(resultSet.getTimestamp("creation_date").toInstant());
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return user;
+        return jdbcTemplate.query(SELECT_USER_BY_ID_QUERY, new UserMapper(), new Object[] {id})
+                .stream().findAny().orElse(null);
     }
 
     public void deleteUserById(UUID userId) {
-        try (Connection connection = ConnectionConfig.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_USER_BY_ID_QUERY)) {
-
-            preparedStatement.setObject(1, userId);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        jdbcTemplate.update(DELETE_USER_BY_ID_QUERY, userId);
     }
 }
