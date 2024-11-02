@@ -17,9 +17,6 @@ import java.util.UUID;
 @Repository
 public class UserDAO {
 
-    @Value("${switcherForUpdateUserAndCreateTicket}")
-    private String switcherForUpdateUserAndCreateTicket;
-
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
@@ -40,7 +37,7 @@ public class UserDAO {
     }
 
     public User fetchUserById(UUID id) {
-        User user = jdbcTemplate.query(SELECT_USER_BY_ID_QUERY, new UserMapper(), new Object[] {id})
+        User user = jdbcTemplate.query(SELECT_USER_BY_ID_QUERY, new UserMapper(), new Object[]{id})
                 .stream().findAny().orElse(null);
 
         if (user != null) {
@@ -59,16 +56,10 @@ public class UserDAO {
 
     @Transactional
     public void updateUserAndCreateTicket(User user, TicketType ticketType) {
-        switch (switcherForUpdateUserAndCreateTicket.toUpperCase()){
-            case "ON":
-                Ticket ticket = new Ticket(user.getId(), ticketType);
-                user.getTickets().add(ticket);
-                jdbcTemplate.update(INSERT_TICKET_WITH_USER_QUERY,
-                                ticket.getId(), user.getId(), ticket.getType().name(), Timestamp.from(ticket.getTicketCreationTime()));
-                jdbcTemplate.update(UPDATE_USER_STATUS_QUERY, Status.ACTIVATED.name(), user.getId());
-                break;
-            case "OFF": throw new IllegalArgumentException("The operation is disabled now");
-            default: throw new IllegalArgumentException("The operation is not enabled");
-        }
+        Ticket ticket = new Ticket(user.getId(), ticketType);
+        user.getTickets().add(ticket);
+        jdbcTemplate.update(INSERT_TICKET_WITH_USER_QUERY,
+                ticket.getId(), user.getId(), ticket.getType().name(), Timestamp.from(ticket.getTicketCreationTime()));
+        jdbcTemplate.update(UPDATE_USER_STATUS_QUERY, Status.ACTIVATED.name(), user.getId());
     }
 }

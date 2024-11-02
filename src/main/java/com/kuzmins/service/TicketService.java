@@ -9,9 +9,12 @@ import com.kuzmins.model.ShareTicket;
 import com.kuzmins.model.Ticket;
 import com.kuzmins.model.TicketType;
 import com.kuzmins.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -23,6 +26,18 @@ import java.util.UUID;
 
 @Service
 public class TicketService extends BasicEntity implements ShareTicket {
+
+    @Value("${switcherForUpdateUserAndCreateTicket}")
+    private String switcherForUpdateUserAndCreateTicket;
+
+    private TicketDAO ticketDAO;
+    private UserDAO userDAO;
+
+    @Autowired
+    public TicketService(UserDAO userDAO, TicketDAO ticketDAO){
+        this.userDAO = userDAO;
+        this.ticketDAO = ticketDAO;
+    }
 
     private static final HashMap<UUID, Ticket> TICKETS = new HashMap<>();
 
@@ -92,13 +107,13 @@ public class TicketService extends BasicEntity implements ShareTicket {
         return sectorTickets;
     }
 
-    public static void main(String[] args) {
-        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(SpringConfig.class);
-        TicketDAO ticketDAO = applicationContext.getBean(TicketDAO.class);
-        UserDAO userDAO = applicationContext.getBean(UserDAO.class);
-
-        User matt = new User("Matt");
-        userDAO.saveUser(matt);
-        userDAO.updateUserAndCreateTicket(matt, TicketType.WEEK);
+    public void enableUpdateUserAndCreateTicket(User user, TicketType ticketType) {
+        switch (switcherForUpdateUserAndCreateTicket.toUpperCase()){
+            case "ON":
+                userDAO.updateUserAndCreateTicket(user, ticketType);
+                break;
+            case "OFF": throw new IllegalArgumentException("The operation is disabled now");
+            default: throw new IllegalArgumentException("The operation is not enabled");
+        }
     }
 }
