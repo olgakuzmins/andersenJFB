@@ -1,6 +1,5 @@
 package com.kuzmins.service;
 
-import com.kuzmins.config.SpringConfig;
 import com.kuzmins.dao.TicketDAO;
 import com.kuzmins.dao.UserDAO;
 import com.kuzmins.model.BasicEntity;
@@ -11,10 +10,7 @@ import com.kuzmins.model.TicketType;
 import com.kuzmins.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.Instant;
