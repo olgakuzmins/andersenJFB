@@ -1,4 +1,4 @@
-package com.kuzmins.service;
+package com.kuzmins.model;
 
 public interface Printable {
 

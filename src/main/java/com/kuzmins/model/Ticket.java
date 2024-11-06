@@ -149,16 +149,19 @@ public class Ticket extends BasicEntity {
 
     @Override
     public String toString() {
-        return "Ticket #" + id + '\n' +
-                "concertHall = "+ concertHall + '\n' +
-                "eventCode = " + eventCode + '\n' +
-                "time = " + formatDate(time) + '\n' +
-                "isPromo = " + isPromo + '\n' +
-                "sector = " + sector + '\n' +
-                "type = " + type + '\n' +
-                "backpackWeight = " + backpackWeight + '\n' +
-                "ticketCreationTime = " + formatDate(ticketCreationTime) + '\n' +
-                "price = " + (price != null ? formatter.format(price) : null) + '\n';
+        return "Ticket{" +
+                "id=" + id +
+                ", price=" + price +
+                ", ticketCreationTime=" + ticketCreationTime +
+                ", backpackWeight=" + backpackWeight +
+                ", type=" + type +
+                ", sector=" + sector +
+                ", isPromo=" + isPromo +
+                ", time=" + time +
+                ", eventCode='" + eventCode + '\'' +
+                ", concertHall='" + concertHall + '\'' +
+                ", userId=" + userId +
+                '}';
     }
 
     private String formatDate(Instant instant) {
