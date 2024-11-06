@@ -1,4 +1,6 @@
-package com.kuzmins.model;
+package com.kuzmins.model.users;
+
+import com.kuzmins.model.tickets.Ticket;
 
 import java.util.ArrayList;
 import java.util.List;

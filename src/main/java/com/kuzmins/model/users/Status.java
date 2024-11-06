@@ -1,4 +1,4 @@
-package com.kuzmins.model;
+package com.kuzmins.model.users;
 
 public enum Status {
     ACTIVATED,
