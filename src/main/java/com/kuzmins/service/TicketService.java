@@ -16,11 +16,11 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class TicketService extends BasicEntity implements ShareTicket {
 
     private final TicketRepository ticketRepository;
 
+    @Transactional
     public void save(Ticket ticket) {
         ticketRepository.save(ticket);
     }
@@ -38,6 +38,7 @@ public class TicketService extends BasicEntity implements ShareTicket {
         return ticketRepository.findTicketByIdAndUserId(id, userId);
     }
 
+    @Transactional
     public void updateTicketType(UUID id, TicketType type) {
         Ticket ticket = findById(id);
         if (ticket != null) {

@@ -14,7 +14,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
-@Transactional
 @Service
 public class UserService{
 
@@ -24,6 +23,7 @@ public class UserService{
     private final UserRepository userRepository;
     private final TicketRepository ticketRepository;
 
+    @Transactional
     public void save(User user) {
         userRepository.save(user);
     }
@@ -33,15 +33,18 @@ public class UserService{
         return user.orElse(null);
     }
 
+    @Transactional
     public void update(UUID id, User user) {
         user.setId(id);
         userRepository.save(user);
     }
 
+    @Transactional
     public void delete(UUID id) {
         userRepository.deleteById(id);
     }
 
+    @Transactional
     public void enableUpdateUserAndCreateTicket(User user, TicketType ticketType) {
         switch (switcherForUpdateUserAndCreateTicket.toUpperCase()){
             case "ON":
