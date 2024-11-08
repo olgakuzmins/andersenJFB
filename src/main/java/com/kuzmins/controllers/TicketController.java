@@ -18,7 +18,7 @@ public class TicketController {
     private final TicketService ticketService;
     private final ConditionalBean conditionalBean;
 
-    @GetMapping("/ticket/{id}")
+    @GetMapping("/tickets/{id}")
     public Ticket showTicket(@PathVariable("id") UUID id) {
         System.out.println(conditionalBean);
         return ticketService.findById(id);

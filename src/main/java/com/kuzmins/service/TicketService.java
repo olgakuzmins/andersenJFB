@@ -5,7 +5,7 @@ import com.kuzmins.model.ShareTicket;
 import com.kuzmins.model.tickets.Ticket;
 import com.kuzmins.model.tickets.TicketType;
 import com.kuzmins.repositories.TicketRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,17 +15,12 @@ import java.util.UUID;
 
 
 @Service
-@Transactional(readOnly = true)
+@RequiredArgsConstructor
+@Transactional
 public class TicketService extends BasicEntity implements ShareTicket {
 
-    private TicketRepository ticketRepository;
+    private final TicketRepository ticketRepository;
 
-    @Autowired
-    public TicketService(TicketRepository ticketRepository){
-        this.ticketRepository = ticketRepository;
-    }
-
-    @Transactional
     public void save(Ticket ticket) {
         ticketRepository.save(ticket);
     }
@@ -43,7 +38,6 @@ public class TicketService extends BasicEntity implements ShareTicket {
         return ticketRepository.findTicketByIdAndUserId(id, userId);
     }
 
-    @Transactional
     public void updateTicketType(UUID id, TicketType type) {
         Ticket ticket = findById(id);
         if (ticket != null) {
