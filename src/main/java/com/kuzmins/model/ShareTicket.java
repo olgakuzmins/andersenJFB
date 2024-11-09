@@ -1,5 +1,6 @@
 package com.kuzmins.model;
 
+import com.kuzmins.model.tickets.Ticket;
 import com.kuzmins.utils.CheckEmailUtil;
 import com.kuzmins.utils.CheckPhoneNumberUtil;
 import com.kuzmins.utils.CheckTicketUtil;

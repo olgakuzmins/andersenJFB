@@ -1,4 +1,20 @@
-package com.kuzmins.model;
+package com.kuzmins.model.tickets;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.kuzmins.model.BasicEntity;
+import com.kuzmins.model.users.User;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+import jakarta.persistence.Transient;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -7,27 +23,57 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
-import java.util.UUID;
 
+@Entity
+@Table(name = "ticket_info")
+@Getter
+@Setter
 public class Ticket extends BasicEntity {
     private static final DecimalFormat formatter = new DecimalFormat("€##,##");
 
-    private UUID userId;
-    private String concertHall;
-    private String eventCode;
-    private Instant time;
-    private boolean isPromo;
-    private Sector sector;
+/* id parameter (PK name="id") is located in BasicEntity */
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name="user_id", referencedColumnName = "id")
+    private User user;
+
+    @Column(name="ticket_type", nullable = false)
+    @Enumerated(EnumType.STRING)
     private TicketType type;
-    private double backpackWeight;
+
+    @Column(name="creation_date")
+    @Temporal(TemporalType.TIMESTAMP)
     private Instant ticketCreationTime = Instant.now();
+
+// parameters which don't go to DB:
+
+    @Transient
+    private String concertHall;
+
+    @Transient
+    private String eventCode;
+
+    @Transient
+    private Instant time;
+
+    @Transient
+    private boolean isPromo;
+
+    @Transient
+    private Sector sector;
+
+    @Transient
+    private double backpackWeight;
+
+    @Transient
     private BigDecimal price;
 
     public Ticket() {
     }
 
-    public Ticket(UUID userId, TicketType type) {
-        this.userId = userId;
+    public Ticket(User user, TicketType type) {
+        this.user = user;
         this.type = type;
     }
 
@@ -45,64 +91,8 @@ public class Ticket extends BasicEntity {
         this.price = price;
     }
 
-    public UUID getUserId() {
-        return userId;
-    }
-
-    public void setUserId(UUID userId) {
-        this.userId = userId;
-    }
-
-    public String getConcertHall() {
-        return concertHall;
-    }
-
-    public String getEventCode() {
-        return eventCode;
-    }
-
-    public Instant getTime() {
-        return time;
-    }
-
-    public void setTime(Instant time) {
-        this.time = time;
-    }
-
     public boolean isPromo() {
         return isPromo;
-    }
-
-    public double getBackpackWeight() {
-        return backpackWeight;
-    }
-
-    public Instant getTicketCreationTime() {
-        return ticketCreationTime;
-    }
-
-    public void setTicketCreationTime(Instant ticketCreationTime) {
-        this.ticketCreationTime = ticketCreationTime;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public Sector getSector() {
-        return sector;
-    }
-
-    public void setSector(Sector sector) {
-        this.sector = sector;
-    }
-
-    public TicketType getType() {
-        return type;
-    }
-
-    public void setType(TicketType type) {
-        this.type = type;
     }
 
     public void checkConcertHall(String concertHall) {
@@ -152,15 +142,15 @@ public class Ticket extends BasicEntity {
         return "Ticket{" +
                 "id=" + id +
                 ", price=" + price +
-                ", ticketCreationTime=" + ticketCreationTime +
                 ", backpackWeight=" + backpackWeight +
-                ", type=" + type +
                 ", sector=" + sector +
                 ", isPromo=" + isPromo +
                 ", time=" + time +
                 ", eventCode='" + eventCode + '\'' +
                 ", concertHall='" + concertHall + '\'' +
-                ", userId=" + userId +
+                ", ticketCreationTime=" + ticketCreationTime +
+                ", type=" + type +
+                ", user=" + (user==null?"null": user.getId()) +
                 '}';
     }
 

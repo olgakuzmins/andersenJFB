@@ -2,7 +2,7 @@ package com.kuzmins.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kuzmins.model.BusTicket;
+import com.kuzmins.model.tickets.BusTicket;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;

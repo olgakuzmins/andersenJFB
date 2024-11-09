@@ -1,4 +1,4 @@
-package com.kuzmins.model;
+package com.kuzmins.model.tickets;
 
 public enum Sector {
     A,
