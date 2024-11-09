@@ -1,4 +1,3 @@
 package com.kuzmins.storage;
 
-public class CustomHashSetTest {
-}
+public class CustomHashSetTest {}

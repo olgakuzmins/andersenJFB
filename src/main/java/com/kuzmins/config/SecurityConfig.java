@@ -11,16 +11,13 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/tickets/*").authenticated()
-                        .anyRequest().permitAll()
-                )
-                .httpBasic(Customizer.withDefaults());
+  @Bean
+  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    http.authorizeHttpRequests(
+            (requests) ->
+                requests.requestMatchers("/tickets/*").authenticated().anyRequest().permitAll())
+        .httpBasic(Customizer.withDefaults());
 
-        return http.build();
-    }
-
+    return http.build();
+  }
 }

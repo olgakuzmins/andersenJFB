@@ -1,4 +1,3 @@
 package com.kuzmins.storage;
 
-public class CustomArrayListTest {
-}
+public class CustomArrayListTest {}

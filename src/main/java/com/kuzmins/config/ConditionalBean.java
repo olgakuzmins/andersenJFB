@@ -1,4 +1,3 @@
 package com.kuzmins.config;
 
-public class ConditionalBean {
-}
+public class ConditionalBean {}
