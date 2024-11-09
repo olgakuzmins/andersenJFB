@@ -21,6 +21,5 @@ public abstract class BasicEntity implements Printable {
 
   public BasicEntity() {
     this.id = UUID.randomUUID();
-    ;
   }
 }
