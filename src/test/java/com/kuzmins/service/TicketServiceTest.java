@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
+import static org.mockito.ArgumentMatchers.eq;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -62,7 +63,7 @@ public class TicketServiceTest {
 
     Assertions.assertNotNull(runtimeException);
 
-    Mockito.verify(ticketRepository).save(any(Ticket.class));
+    Mockito.verify(ticketRepository).save(eq(ticket));
     Assertions.assertEquals("Problem with DB access", runtimeException.getMessage());
 
     Mockito.verifyNoMoreInteractions(ticketRepository);
@@ -72,12 +73,12 @@ public class TicketServiceTest {
   @Test
   void findTicketWhenCallFindById() {
     UUID id = UUID.randomUUID();
-    Ticket ticket = new Ticket();
+    Ticket expectedTicket = new Ticket();
 
-    Mockito.when(ticketRepository.findById(id)).thenReturn(Optional.of(ticket));
-    Ticket byId = ticketService.findById(id);
+    Mockito.when(ticketRepository.findById(id)).thenReturn(Optional.of(expectedTicket));
+    Ticket actualTicket = ticketService.findById(id);
 
-    Assertions.assertEquals(ticket, byId);
+    Assertions.assertEquals(expectedTicket, actualTicket);
 
     Mockito.verify(ticketRepository).findById(id);
     Mockito.verifyNoMoreInteractions(ticketRepository);
@@ -88,9 +89,9 @@ public class TicketServiceTest {
     UUID id = UUID.randomUUID();
 
     Mockito.when(ticketRepository.findById(id)).thenReturn(Optional.empty());
-    Ticket byId = ticketService.findById(id);
+    Ticket actualTicket = ticketService.findById(id);
 
-    Assertions.assertNull(byId);
+    Assertions.assertNull(actualTicket);
     Mockito.verify(ticketRepository).findById(id);
     Mockito.verifyNoMoreInteractions(ticketRepository);
   }
@@ -116,13 +117,13 @@ public class TicketServiceTest {
   @Test
   void findsListOfTicketsWhenCallFindByUserId() {
     UUID id = UUID.randomUUID();
-    List<Ticket> ticketList = new ArrayList<>();
-    ticketList.add(new Ticket());
+    List<Ticket> expectedTicketList = new ArrayList<>();
+    expectedTicketList.add(new Ticket());
 
-    Mockito.when(ticketRepository.findTicketsByUserId(id)).thenReturn(ticketList);
-    List<Ticket> returnedListOfTickets = ticketService.findByUserId(id);
+    Mockito.when(ticketRepository.findTicketsByUserId(id)).thenReturn(expectedTicketList);
+    List<Ticket> actualTicketList = ticketService.findByUserId(id);
 
-    Assertions.assertEquals(ticketList, returnedListOfTickets);
+    Assertions.assertEquals(expectedTicketList, actualTicketList);
 
     Mockito.verify(ticketRepository).findTicketsByUserId(id);
     Mockito.verifyNoMoreInteractions(ticketRepository);
@@ -133,9 +134,9 @@ public class TicketServiceTest {
     UUID id = UUID.randomUUID();
 
     Mockito.when(ticketRepository.findTicketsByUserId(id)).thenReturn(null);
-    List<Ticket> returnedListOfTickets = ticketService.findByUserId(id);
+    List<Ticket> actualTicketList = ticketService.findByUserId(id);
 
-    Assertions.assertNull(returnedListOfTickets);
+    Assertions.assertNull(actualTicketList);
 
     Mockito.verify(ticketRepository).findTicketsByUserId(id);
     Mockito.verifyNoMoreInteractions(ticketRepository);
@@ -165,18 +166,18 @@ public class TicketServiceTest {
     UUID id = UUID.randomUUID();
     UUID userId = UUID.randomUUID();
 
-    Ticket ticket = new Ticket();
+    Ticket expectedTicket = new Ticket();
     User user = new User();
 
     user.setId(userId);
-    ticket.setId(id);
-    ticket.setUser(user);
+    expectedTicket.setId(id);
+    expectedTicket.setUser(user);
 
-    Mockito.when(ticketRepository.findTicketByIdAndUserId(id, userId)).thenReturn(ticket);
+    Mockito.when(ticketRepository.findTicketByIdAndUserId(id, userId)).thenReturn(expectedTicket);
 
-    Ticket byId = ticketService.findByIdAndUserId(id, userId);
+    Ticket actualTicket = ticketService.findByIdAndUserId(id, userId);
 
-    Assertions.assertEquals(ticket, byId);
+    Assertions.assertEquals(expectedTicket, actualTicket);
 
     Mockito.verify(ticketRepository).findTicketByIdAndUserId(id, userId);
     Mockito.verifyNoMoreInteractions(ticketRepository);
@@ -186,12 +187,11 @@ public class TicketServiceTest {
   void doNotFindTicketWhenCallFindByIdAndUserId() {
     UUID id = UUID.randomUUID();
     UUID userId = UUID.randomUUID();
-    Ticket ticket = new Ticket();
 
     Mockito.when(ticketRepository.findTicketByIdAndUserId(id, userId)).thenReturn(null);
-    Ticket byId = ticketService.findByIdAndUserId(id, userId);
+    Ticket actualTicket = ticketService.findByIdAndUserId(id, userId);
 
-    Assertions.assertNull(byId);
+    Assertions.assertNull(actualTicket);
 
     Mockito.verify(ticketRepository).findTicketByIdAndUserId(id, userId);
     Mockito.verifyNoMoreInteractions(ticketRepository);
@@ -221,20 +221,20 @@ public class TicketServiceTest {
   void updateTicketWhenCallUpdateTicketType() {
     UUID id = UUID.randomUUID();
     TicketType ticketType = TicketType.YEAR;
-    Ticket ticket = new Ticket(new User(), TicketType.MONTH);
+    Ticket expectedTicket = new Ticket(new User(), TicketType.MONTH);
 
-    Mockito.when(ticketRepository.findById(id)).thenReturn(Optional.of(ticket));
+    Mockito.when(ticketRepository.findById(id)).thenReturn(Optional.of(expectedTicket));
 
     ticketService.updateTicketType(id, ticketType);
 
     ArgumentCaptor<Ticket> argumentCaptor = ArgumentCaptor.forClass(Ticket.class);
     Mockito.verify(ticketRepository).save(argumentCaptor.capture());
-    Ticket ticket1 = argumentCaptor.getValue();
+    Ticket actualTicket = argumentCaptor.getValue();
 
-    Assertions.assertEquals(ticket.getId(), ticket1.getId());
-    Assertions.assertEquals(ticket.getUser(), ticket1.getUser());
-    Assertions.assertEquals(ticket.getTicketCreationTime(), ticket1.getTicketCreationTime());
-    Assertions.assertEquals(ticketType, ticket1.getType());
+    Assertions.assertEquals(expectedTicket.getId(), actualTicket.getId());
+    Assertions.assertEquals(expectedTicket.getUser(), actualTicket.getUser());
+    Assertions.assertEquals(expectedTicket.getTicketCreationTime(), actualTicket.getTicketCreationTime());
+    Assertions.assertEquals(ticketType, actualTicket.getType());
 
     Mockito.verify(ticketRepository).findById(id);
     Mockito.verifyNoMoreInteractions(ticketRepository);
@@ -250,7 +250,7 @@ public class TicketServiceTest {
     ticketService.updateTicketType(id, ticketType);
 
     Mockito.verify(ticketRepository).findById(id);
-    Mockito.verify(ticketRepository, Mockito.never()).save(any());
+    Mockito.verify(ticketRepository, Mockito.never()).save(any(Ticket.class));
     Mockito.verifyNoMoreInteractions(ticketRepository);
   }
 
