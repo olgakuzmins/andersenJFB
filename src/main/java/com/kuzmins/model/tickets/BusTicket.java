@@ -5,12 +5,11 @@ import lombok.Data;
 @Data
 public class BusTicket {
 
-    private String ticketClass;
+  private String ticketClass;
 
-    private String ticketType;
+  private String ticketType;
 
-    private String startDate;
+  private String startDate;
 
-    private String price;
-
+  private String price;
 }

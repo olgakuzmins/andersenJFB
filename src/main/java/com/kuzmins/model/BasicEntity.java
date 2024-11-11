@@ -5,23 +5,21 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
+import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.UUID;
 
 @Setter
 @Getter
 @MappedSuperclass
 public abstract class BasicEntity implements Printable {
 
-    @Id
-    @Column(name="id")
-    @GeneratedValue(strategy = GenerationType.UUID)
-    protected UUID id;
+  @Id
+  @Column(name = "id")
+  @GeneratedValue(strategy = GenerationType.UUID)
+  protected UUID id;
 
-    public BasicEntity(){
-        this.id = UUID.randomUUID();;
-    }
-
+  public BasicEntity() {
+    this.id = UUID.randomUUID();
+  }
 }
